@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useFinance } from "../context/FinanceContext";
 import "./Sidebar.css";
 
@@ -12,7 +12,8 @@ const links = [
 ];
 
 export default function Sidebar() {
-  const { saldo, formatarMoeda, perfil, darkMode, toggleDarkMode } = useFinance();
+  const { saldo, formatarMoeda, perfil, darkMode, toggleDarkMode, logout } = useFinance();
+  const navigate = useNavigate();
 
   return (
     <nav className="sidebar">
@@ -62,6 +63,19 @@ export default function Sidebar() {
       <div className="sidebar-avatar">
         <div className="avatar-circle">{perfil.avatar}</div>
         <span>{perfil.nome.split(" ")[0]}</span>
+        <button
+          onClick={() => { logout(); navigate("/login"); }}
+          style={{
+            marginLeft: "auto", background: "none", border: "none",
+            cursor: "pointer", fontSize: 16, opacity: 0.5,
+            transition: "opacity 0.15s"
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
+          onMouseLeave={(e) => e.currentTarget.style.opacity = 0.5}
+          title="Sair"
+        >
+          🚪
+        </button>
       </div>
     </nav>
   );
