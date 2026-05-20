@@ -3,15 +3,16 @@ import { useFinance } from "../context/FinanceContext";
 import "./Sidebar.css";
 
 const links = [
-  { to: "/",            label: "Home",           icon: "🏠" },
-  { to: "/dashboard",   label: "Dashboard",      icon: "📊" },
-  { to: "/transactions",label: "Transações",     icon: "📋" },
-  { to: "/new",         label: "Nova Transação", icon: "➕" },
-  { to: "/profile",     label: "Perfil",         icon: "👤" },
+  { to: "/",             label: "Home",           icon: "🏠" },
+  { to: "/dashboard",    label: "Dashboard",      icon: "📊" },
+  { to: "/transactions", label: "Transações",     icon: "📋" },
+  { to: "/new",          label: "Nova Transação", icon: "➕" },
+  { to: "/goals",        label: "Metas",          icon: "🎯" },
+  { to: "/profile",      label: "Perfil",         icon: "👤" },
 ];
 
 export default function Sidebar() {
-  const { saldo, formatarMoeda, perfil } = useFinance();
+  const { saldo, formatarMoeda, perfil, darkMode, toggleDarkMode } = useFinance();
 
   return (
     <nav className="sidebar">
@@ -41,6 +42,22 @@ export default function Sidebar() {
           </li>
         ))}
       </ul>
+
+      <button
+        onClick={toggleDarkMode}
+        style={{
+          display: "flex", alignItems: "center", gap: 10,
+          padding: "10px 12px", borderRadius: 10, border: "none",
+          background: "transparent", cursor: "pointer",
+          color: "rgba(255,255,255,0.55)", fontSize: 14,
+          fontWeight: 500, width: "100%", transition: "all 0.15s",
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.07)"}
+        onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+      >
+        <span>{darkMode ? "☀️" : "🌙"}</span>
+        <span>{darkMode ? "Modo Claro" : "Modo Escuro"}</span>
+      </button>
 
       <div className="sidebar-avatar">
         <div className="avatar-circle">{perfil.avatar}</div>
