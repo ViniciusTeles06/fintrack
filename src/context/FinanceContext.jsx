@@ -45,8 +45,48 @@ export function FinanceProvider({ children }) {
     carregarStorage("fintrack_darkmode", false)
   );
 
-  const toggleDarkMode = () => {
-    setDarkMode((prev) => !prev);
+  const [usuarioLogado, setUsuarioLogado] = useState(() =>
+    carregarStorage("fintrack_logado", false)
+  );
+
+  const [usuarios, setUsuarios] = useState(() =>
+    carregarStorage("fintrack_usuarios", [])
+  );
+
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+
+  const login = (email, senha) => {
+    const usuario = usuarios.find(
+      (u) => u.email === email && u.senha === senha
+    );
+    if (!usuario) return { sucesso: false, erro: "E-mail ou senha incorretos." };
+
+    setUsuarioLogado(true);
+    setPerfil({
+      nome: usuario.nome,
+      email: usuario.email,
+      avatar: usuario.nome.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase(),
+    });
+    return { sucesso: true };
+  };
+
+  const register = (nome, email, senha) => {
+    const existe = usuarios.find((u) => u.email === email);
+    if (existe) return { sucesso: false, erro: "E-mail já cadastrado." };
+
+    const novoUsuario = { nome, email, senha };
+    setUsuarios((prev) => [...prev, novoUsuario]);
+    setUsuarioLogado(true);
+    setPerfil({
+      nome,
+      email,
+      avatar: nome.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase(),
+    });
+    return { sucesso: true };
+  };
+
+  const logout = () => {
+    setUsuarioLogado(false);
   };
 
   useEffect(() => {
@@ -65,6 +105,14 @@ export function FinanceProvider({ children }) {
     localStorage.setItem("fintrack_darkmode", JSON.stringify(darkMode));
     document.body.classList.toggle("dark", darkMode);
   }, [darkMode]);
+
+  useEffect(() => {
+    localStorage.setItem("fintrack_logado", JSON.stringify(usuarioLogado));
+  }, [usuarioLogado]);
+
+  useEffect(() => {
+    localStorage.setItem("fintrack_usuarios", JSON.stringify(usuarios));
+  }, [usuarios]);
 
   const adicionarTransacao = (transacao) => {
     setTransacoes((prev) => [{ ...transacao, id: Date.now() }, ...prev]);
@@ -110,6 +158,7 @@ export function FinanceProvider({ children }) {
       adicionarMeta, atualizarMeta, removerMeta,
       totalReceitas, totalDespesas, saldo, formatarMoeda,
       darkMode, toggleDarkMode,
+      usuarioLogado, login, register, logout,
     }}>
       {children}
     </FinanceContext.Provider>
