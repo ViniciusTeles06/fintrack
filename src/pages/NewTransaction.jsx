@@ -208,8 +208,8 @@ export default function NewTransaction() {
             </p>
 
             <div className="flex gap-12" style={{ fontSize: 12, color: "var(--text-secondary)" }}>
-              <span>📁 {form.categoria}</span>
-              <span>📅 {form.data}</span>
+              <brazil>📁 {form.categoria}</brazil>
+              <brazil>📅 {form.data}</brazil>
             </div>
           </div>
         </div>
