@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFinance } from "../context/FinanceContext";
+import { WalletIcon } from "../components/Sidebar";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -13,10 +14,8 @@ export default function Register() {
     if (!form.email.trim()) return setErro("Informe o e-mail.");
     if (form.senha.length < 6) return setErro("A senha deve ter pelo menos 6 caracteres.");
     if (form.senha !== form.confirmar) return setErro("As senhas não coincidem.");
-
     const resultado = register(form.nome, form.email, form.senha);
     if (!resultado.sucesso) return setErro(resultado.erro);
-
     navigate("/");
   };
 
@@ -24,13 +23,14 @@ export default function Register() {
     <div style={{
       minHeight: "100vh", display: "flex",
       alignItems: "center", justifyContent: "center",
-      background: "#f1f5f9"
     }}>
       <div className="card" style={{ width: "100%", maxWidth: 400 }}>
         <div style={{ textAlign: "center", marginBottom: 28 }}>
-          <p style={{ fontSize: 40 }}>💎</p>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
+            <WalletIcon size={56} />
+          </div>
           <h1 style={{ fontSize: 24, fontWeight: 800, marginTop: 8 }}>FinTrack</h1>
-          <p style={{ color: "#64748b", fontSize: 14, marginTop: 4 }}>
+          <p style={{ color: "var(--text-secondary)", fontSize: 14, marginTop: 4 }}>
             Crie sua conta gratuitamente
           </p>
         </div>
@@ -81,8 +81,10 @@ export default function Register() {
 
           {erro && (
             <p style={{
-              fontSize: 13, color: "#dc2626", background: "#fff5f5",
-              padding: "10px 14px", borderRadius: 8, border: "1px solid #fecaca"
+              fontSize: 13, color: "#ef4444",
+              background: "rgba(239,68,68,0.1)",
+              padding: "10px 14px", borderRadius: 8,
+              border: "1px solid rgba(239,68,68,0.2)"
             }}>
               ⚠️ {erro}
             </p>
@@ -93,10 +95,10 @@ export default function Register() {
             Criar conta
           </button>
 
-          <p style={{ textAlign: "center", fontSize: 13, color: "#64748b" }}>
+          <p style={{ textAlign: "center", fontSize: 13, color: "var(--text-secondary)" }}>
             Já tem conta?{" "}
             <span onClick={() => navigate("/login")}
-              style={{ color: "#6366f1", fontWeight: 700, cursor: "pointer" }}>
+              style={{ color: "#10b981", fontWeight: 700, cursor: "pointer" }}>
               Entrar
             </span>
           </p>

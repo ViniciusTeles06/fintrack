@@ -1,13 +1,14 @@
 import { useFinance } from "../context/FinanceContext";
 import { useNavigate } from "react-router-dom";
 import { WalletIcon } from "../components/Sidebar";
+import PageWrapper from "../components/PageWrapper";
 
 export default function Home() {
   const { totalReceitas, totalDespesas, saldo, formatarMoeda, transacoes } = useFinance();
   const navigate = useNavigate();
 
   return (
-    <div>
+    <PageWrapper>
       <div className="page-header">
         <div className="flex items-center gap-12">
           <WalletIcon size={40} />
@@ -82,6 +83,6 @@ export default function Home() {
           Ver Dashboard
         </button>
       </div>
-    </div>
+    </PageWrapper>
   );
 }
