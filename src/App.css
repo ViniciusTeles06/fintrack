@@ -262,3 +262,28 @@ body.light .form-select option {
 .font-bold { font-weight: 700; }
 .w-full { width: 100%; }
 .text-right { text-align: right; }
+
+/* Animação de entrada das páginas */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-animate {
+  animation: fadeSlideIn 0.35s ease forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to {opacity: 1; transform: translateY(0) scale(1); }
+}
