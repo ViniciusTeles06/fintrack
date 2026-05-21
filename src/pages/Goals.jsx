@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useFinance } from "../context/FinanceContext";
 import PageWrapper from "../components/PageWrapper";
+import GoalCompleteModal from "../components/GoalCompleteModal";
 
 const icones = ["🎯", "✈️", "🏠", "🚗", "💻", "📱", "🎓", "💍", "🏖️", "🛡️"];
 
@@ -11,6 +12,7 @@ export default function Goals() {
   const [aportarId, setAportarId] = useState(null);
   const [valorAporte, setValorAporte] = useState("");
   const [erro, setErro] = useState("");
+  const [metaConcluida, setMetaConcluida] = useState(null);
   const [form, setForm] = useState({ nome: "", valorAlvo: "", prazo: "", icone: "🎯" });
 
   const handleSalvar = () => {
@@ -26,15 +28,24 @@ export default function Goals() {
   const handleAportar = (id) => {
     const valor = parseFloat(valorAporte);
     if (!valor || valor <= 0) return;
-    atualizarMeta(id, valor);
+
     const meta = metas.find((m) => m.id === id);
+    const novoValor = Math.min(meta.valorAtual + valor, meta.valorAlvo);
+    const vaIConcluir = novoValor >= meta.valorAlvo;
+
+    atualizarMeta(id, valor);
     adicionarTransacao({
       descricao: `Aporte: ${meta.nome}`,
       valor, tipo: "despesa", categoria: "Meta",
       data: new Date().toISOString().split("T")[0],
     });
+
     setAportarId(null);
     setValorAporte("");
+
+    if (vaIConcluir) {
+      setMetaConcluida(meta);
+    }
   };
 
   const concluidas = metas.filter((m) => m.valorAtual >= m.valorAlvo).length;
@@ -42,6 +53,13 @@ export default function Goals() {
 
   return (
     <PageWrapper>
+      {metaConcluida && (
+        <GoalCompleteModal
+          meta={metaConcluida}
+          onClose={() => setMetaConcluida(null)}
+        />
+      )}
+
       <div className="page-header" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
           <h1 className="page-title">Metas Financeiras</h1>
