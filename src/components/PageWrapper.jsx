@@ -1,7 +1,14 @@
+import { motion, AnimatePresence } from "framer-motion";
+
 export default function PageWrapper({ children }) {
   return (
-    <div className="page-animate">
+    <motion.div
+      initial={{ opacity: 0, x: 40 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -40 }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }
