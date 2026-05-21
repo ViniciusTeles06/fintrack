@@ -9,7 +9,39 @@ const links = [
   { to: "/new",          label: "Nova Transação", icon: "➕" },
   { to: "/goals",        label: "Metas",          icon: "🎯" },
   { to: "/profile",      label: "Perfil",         icon: "👤" },
+  { to: "/categories",   label: "Categorias",     icon: "🥧" },
 ];
+
+export function WalletIcon({ size = 36 }) {
+  return (
+    <div style={{
+      width: size,
+      height: size,
+      borderRadius: size * 0.28,
+      background: "linear-gradient(135deg, #10b981, #059669)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      boxShadow: "0 0 16px rgba(16, 185, 129, 0.45)",
+      flexShrink: 0,
+    }}>
+      <svg
+        width={size * 0.55}
+        height={size * 0.55}
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+        <rect x="2" y="7" width="20" height="13" rx="2.5"
+          fill="white" fillOpacity="0.2"
+          stroke="white" strokeWidth="1.8"/>
+        <path d="M2 11h20" stroke="white" strokeWidth="1.8"/>
+        <circle cx="17" cy="15.5" r="1.5" fill="white"/>
+        <path d="M7 7V6a4 4 0 018 0v1"
+          stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+      </svg>
+    </div>
+  );
+}
 
 export default function Sidebar() {
   const { saldo, formatarMoeda, perfil, darkMode, toggleDarkMode, logout } = useFinance();
@@ -18,7 +50,7 @@ export default function Sidebar() {
   return (
     <nav className="sidebar">
       <div className="sidebar-brand">
-        <span>💎</span>
+        <WalletIcon size={36} />
         <span>FinTrack</span>
       </div>
 
@@ -53,7 +85,7 @@ export default function Sidebar() {
           color: "rgba(255,255,255,0.55)", fontSize: 14,
           fontWeight: 500, width: "100%", transition: "all 0.15s",
         }}
-        onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.07)"}
+        onMouseEnter={(e) => e.currentTarget.style.background = "rgba(16,185,129,0.1)"}
         onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
       >
         <span>{darkMode ? "☀️" : "🌙"}</span>

@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import "./App.css";
+import Categories from "./pages/Categories";
 
 function RotasProtegidas() {
   const { usuarioLogado } = useFinance();
@@ -27,6 +28,7 @@ function RotasProtegidas() {
           <Route path="/new" element={<NewTransaction />} />
           <Route path="/goals" element={<Goals />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/categories" element={<Categories />} />
         </Routes>
       </main>
     </div>
