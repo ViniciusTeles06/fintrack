@@ -42,7 +42,7 @@ export function FinanceProvider({ children }) {
   );
 
   const [darkMode, setDarkMode] = useState(() =>
-    carregarStorage("fintrack_darkmode", false)
+    carregarStorage("fintrack_darkmode", true)
   );
 
   const [usuarioLogado, setUsuarioLogado] = useState(() =>
@@ -60,7 +60,6 @@ export function FinanceProvider({ children }) {
       (u) => u.email === email && u.senha === senha
     );
     if (!usuario) return { sucesso: false, erro: "E-mail ou senha incorretos." };
-
     setUsuarioLogado(true);
     setPerfil({
       nome: usuario.nome,
@@ -73,7 +72,6 @@ export function FinanceProvider({ children }) {
   const register = (nome, email, senha) => {
     const existe = usuarios.find((u) => u.email === email);
     if (existe) return { sucesso: false, erro: "E-mail já cadastrado." };
-
     const novoUsuario = { nome, email, senha };
     setUsuarios((prev) => [...prev, novoUsuario]);
     setUsuarioLogado(true);
@@ -85,9 +83,7 @@ export function FinanceProvider({ children }) {
     return { sucesso: true };
   };
 
-  const logout = () => {
-    setUsuarioLogado(false);
-  };
+  const logout = () => setUsuarioLogado(false);
 
   useEffect(() => {
     localStorage.setItem("fintrack_transacoes", JSON.stringify(transacoes));
@@ -103,7 +99,13 @@ export function FinanceProvider({ children }) {
 
   useEffect(() => {
     localStorage.setItem("fintrack_darkmode", JSON.stringify(darkMode));
-    document.body.classList.toggle("dark", darkMode);
+    if (darkMode) {
+      document.body.classList.add("dark");
+      document.body.classList.remove("light");
+    } else {
+      document.body.classList.add("light");
+      document.body.classList.remove("dark");
+    }
   }, [darkMode]);
 
   useEffect(() => {
@@ -120,6 +122,14 @@ export function FinanceProvider({ children }) {
 
   const removerTransacao = (id) => {
     setTransacoes((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  const editarTransacao = (id, dadosNovos) => {
+    setTransacoes((prev) =>
+      prev.map((t) =>
+        t.id === id ? { ...t, ...dadosNovos, valor: parseFloat(dadosNovos.valor) } : t
+      )
+    );
   };
 
   const adicionarMeta = (meta) => {
@@ -154,7 +164,7 @@ export function FinanceProvider({ children }) {
   return (
     <FinanceContext.Provider value={{
       transacoes, metas, perfil, setPerfil,
-      adicionarTransacao, removerTransacao,
+      adicionarTransacao, removerTransacao, editarTransacao,
       adicionarMeta, atualizarMeta, removerMeta,
       totalReceitas, totalDespesas, saldo, formatarMoeda,
       darkMode, toggleDarkMode,
