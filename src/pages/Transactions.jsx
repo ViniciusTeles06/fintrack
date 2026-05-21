@@ -3,13 +3,20 @@ import { useFinance } from "../context/FinanceContext";
 import { useNavigate } from "react-router-dom";
 import PageWrapper from "../components/PageWrapper";
 
+const categoriasPorTipo = {
+  receita: ["Salário", "Renda Extra", "Investimentos", "Freelance", "Presente", "Outros"],
+  despesa: ["Alimentação", "Moradia", "Transporte", "Saúde", "Educação", "Contas", "Lazer", "Roupas", "Meta", "Outros"],
+};
+
 export default function Transactions() {
-  const { transacoes, removerTransacao, formatarMoeda } = useFinance();
+  const { transacoes, removerTransacao, editarTransacao, formatarMoeda } = useFinance();
   const navigate = useNavigate();
 
   const [filtroTipo, setFiltroTipo] = useState("todos");
   const [busca, setBusca] = useState("");
   const [ordenar, setOrdenar] = useState("data");
+  const [editando, setEditando] = useState(null);
+  const [formEdit, setFormEdit] = useState({});
 
   const filtradas = transacoes
     .filter((t) => {
@@ -25,8 +32,117 @@ export default function Transactions() {
       return a.descricao.localeCompare(b.descricao);
     });
 
+  const abrirEdicao = (t) => {
+    setEditando(t.id);
+    setFormEdit({ ...t });
+  };
+
+  const salvarEdicao = () => {
+    editarTransacao(editando, formEdit);
+    setEditando(null);
+  };
+
   return (
     <PageWrapper>
+      {/* Modal de edição */}
+      {editando && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 9999,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: "rgba(0,0,0,0.6)", backdropFilter: "blur(6px)",
+          animation: "fadeIn 0.3s ease",
+        }}>
+          <div className="card" style={{
+            width: "100%", maxWidth: 440,
+            animation: "slideUp 0.35s ease",
+            border: "1.5px solid var(--card-border)",
+          }}>
+            <h2 style={{ fontWeight: 700, fontSize: 18, marginBottom: 20, color: "var(--text-primary)" }}>
+              ✏️ Editar transação
+            </h2>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {/* Tipo */}
+              <div className="flex gap-8">
+                {["despesa", "receita"].map((tipo) => (
+                  <button
+                    key={tipo}
+                    onClick={() => setFormEdit((p) => ({ ...p, tipo, categoria: categoriasPorTipo[tipo][0] }))}
+                    style={{
+                      flex: 1, padding: 12, borderRadius: 10, fontSize: 14,
+                      fontWeight: 700, cursor: "pointer", transition: "all 0.15s",
+                      border: formEdit.tipo === tipo
+                        ? `2px solid ${tipo === "receita" ? "#10b981" : "#ef4444"}`
+                        : "2px solid var(--card-border)",
+                      background: formEdit.tipo === tipo
+                        ? tipo === "receita" ? "rgba(16,185,129,0.15)" : "rgba(239,68,68,0.12)"
+                        : "var(--input-bg)",
+                      color: formEdit.tipo === tipo
+                        ? tipo === "receita" ? "#10b981" : "#ef4444"
+                        : "var(--text-secondary)",
+                    }}
+                  >
+                    {tipo === "receita" ? "📈 Receita" : "📉 Despesa"}
+                  </button>
+                ))}
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Descrição</label>
+                <input
+                  className="form-input"
+                  value={formEdit.descricao}
+                  onChange={(e) => setFormEdit((p) => ({ ...p, descricao: e.target.value }))}
+                />
+              </div>
+
+              <div className="grid-2">
+                <div className="form-group">
+                  <label className="form-label">Valor (R$)</label>
+                  <input
+                    className="form-input"
+                    type="number"
+                    value={formEdit.valor}
+                    onChange={(e) => setFormEdit((p) => ({ ...p, valor: e.target.value }))}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Data</label>
+                  <input
+                    className="form-input"
+                    type="date"
+                    value={formEdit.data}
+                    onChange={(e) => setFormEdit((p) => ({ ...p, data: e.target.value }))}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Categoria</label>
+                <select
+                  className="form-select"
+                  value={formEdit.categoria}
+                  onChange={(e) => setFormEdit((p) => ({ ...p, categoria: e.target.value }))}
+                >
+                  {categoriasPorTipo[formEdit.tipo]?.map((cat) => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex gap-12" style={{ marginTop: 4 }}>
+                <button className="btn btn-secondary w-full" onClick={() => setEditando(null)}>
+                  Cancelar
+                </button>
+                <button className="btn btn-primary w-full" onClick={salvarEdicao}>
+                  Salvar alterações
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="page-header flex items-center justify-between">
         <div>
           <h1 className="page-title">Transações</h1>
@@ -107,9 +223,11 @@ export default function Transactions() {
             </thead>
             <tbody>
               {filtradas.map((t) => (
-                <tr key={t.id} style={{ transition: "background 0.15s" }}
+                <tr key={t.id}
                   onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.02)"}
-                  onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}>
+                  onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+                  style={{ transition: "background 0.15s" }}
+                >
                   <td style={{ padding: "12px", fontWeight: 600, fontSize: 14, borderBottom: "1px solid var(--card-border)" }}>
                     {t.descricao}
                   </td>
@@ -142,14 +260,32 @@ export default function Transactions() {
                     {t.tipo === "receita" ? "+" : "-"}{formatarMoeda(t.valor)}
                   </td>
                   <td style={{ padding: "12px", borderBottom: "1px solid var(--card-border)" }}>
-                    <button
-                      onClick={() => { if (window.confirm("Remover esta transação?")) removerTransacao(t.id); }}
-                      style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, opacity: 0.5, transition: "opacity 0.15s" }}
-                      onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
-                      onMouseLeave={(e) => e.currentTarget.style.opacity = 0.5}
-                    >
-                      🗑️
-                    </button>
+                    <div className="flex gap-8">
+                      <button
+                        onClick={() => abrirEdicao(t)}
+                        style={{
+                          background: "none", border: "none", cursor: "pointer",
+                          fontSize: 15, opacity: 0.5, transition: "opacity 0.15s"
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
+                        onMouseLeave={(e) => e.currentTarget.style.opacity = 0.5}
+                        title="Editar"
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        onClick={() => { if (window.confirm("Remover esta transação?")) removerTransacao(t.id); }}
+                        style={{
+                          background: "none", border: "none", cursor: "pointer",
+                          fontSize: 15, opacity: 0.5, transition: "opacity 0.15s"
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
+                        onMouseLeave={(e) => e.currentTarget.style.opacity = 0.5}
+                        title="Remover"
+                      >
+                        🗑️
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
