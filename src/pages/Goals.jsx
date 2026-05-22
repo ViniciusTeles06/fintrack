@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useFinance } from "../context/FinanceContext";
+import { Target, Plus, CheckCircle, Trash2, PiggyBank, Clock } from "lucide-react";
 import PageWrapper from "../components/PageWrapper";
 import GoalCompleteModal from "../components/GoalCompleteModal";
 
@@ -43,9 +44,7 @@ export default function Goals() {
     setAportarId(null);
     setValorAporte("");
 
-    if (vaIConcluir) {
-      setMetaConcluida(meta);
-    }
+    if (vaIConcluir) setMetaConcluida(meta);
   };
 
   const concluidas = metas.filter((m) => m.valorAtual >= m.valorAlvo).length;
@@ -54,10 +53,7 @@ export default function Goals() {
   return (
     <PageWrapper>
       {metaConcluida && (
-        <GoalCompleteModal
-          meta={metaConcluida}
-          onClose={() => setMetaConcluida(null)}
-        />
+        <GoalCompleteModal meta={metaConcluida} onClose={() => setMetaConcluida(null)} />
       )}
 
       <div className="page-header" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -65,28 +61,56 @@ export default function Goals() {
           <h1 className="page-title">Metas Financeiras</h1>
           <p className="page-subtitle">Acompanhe e realize seus objetivos</p>
         </div>
-        <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
-          {showForm ? "Cancelar" : "+ Nova Meta"}
+        <button className="btn btn-primary"
+          style={{ display: "flex", alignItems: "center", gap: 6 }}
+          onClick={() => setShowForm(!showForm)}>
+          {showForm
+            ? "Cancelar"
+            : <><Plus size={16} strokeWidth={1.8} /> Nova Meta</>
+          }
         </button>
       </div>
 
+      {/* Resumo */}
       <div className="grid-3" style={{ marginBottom: 16 }}>
-        {[
-          { icon: "🎯", label: "Total de metas", valor: metas.length, cor: "var(--text-primary)" },
-          { icon: "⏳", label: "Em andamento", valor: emAndamento, cor: "#f59e0b" },
-          { icon: "✅", label: "Concluídas", valor: concluidas, cor: "#10b981" },
-        ].map((s) => (
-          <div key={s.label} className="card" style={{ textAlign: "center" }}>
-            <p style={{ fontSize: 32 }}>{s.icon}</p>
-            <p style={{ fontSize: 28, fontWeight: 800, marginTop: 8, color: s.cor }}>{s.valor}</p>
-            <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>{s.label}</p>
+        <div className="card" style={{ textAlign: "center" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+            <div style={{ background: "rgba(59,130,246,0.12)", padding: 12, borderRadius: 12, border: "1px solid rgba(59,130,246,0.2)" }}>
+              <Target size={24} color="#3b82f6" strokeWidth={1.8} />
+            </div>
           </div>
-        ))}
+          <p style={{ fontSize: 28, fontWeight: 800, color: "var(--text-primary)" }}>{metas.length}</p>
+          <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>Total de metas</p>
+        </div>
+
+        <div className="card" style={{ textAlign: "center" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+            <div style={{ background: "rgba(245,158,11,0.12)", padding: 12, borderRadius: 12, border: "1px solid rgba(245,158,11,0.2)" }}>
+              <Clock size={24} color="#f59e0b" strokeWidth={1.8} />
+            </div>
+          </div>
+          <p style={{ fontSize: 28, fontWeight: 800, color: "#f59e0b" }}>{emAndamento}</p>
+          <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>Em andamento</p>
+        </div>
+
+        <div className="card" style={{ textAlign: "center" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+            <div style={{ background: "rgba(16,185,129,0.12)", padding: 12, borderRadius: 12, border: "1px solid rgba(16,185,129,0.2)" }}>
+              <CheckCircle size={24} color="#10b981" strokeWidth={1.8} />
+            </div>
+          </div>
+          <p style={{ fontSize: 28, fontWeight: 800, color: "#10b981" }}>{concluidas}</p>
+          <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>Concluídas</p>
+        </div>
       </div>
 
+      {/* Formulário nova meta */}
       {showForm && (
         <div className="card" style={{ marginBottom: 16, border: "1.5px dashed var(--card-border)" }}>
-          <h3 style={{ fontWeight: 700, marginBottom: 16 }}>Nova meta</h3>
+          <h3 style={{ fontWeight: 700, marginBottom: 16, display: "flex", alignItems: "center", gap: 8 }}>
+            <Target size={16} color="#10b981" strokeWidth={1.8} />
+            Nova meta
+          </h3>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
             {icones.map((ic) => (
               <button key={ic} onClick={() => setForm((p) => ({ ...p, icone: ic }))}
@@ -122,10 +146,14 @@ export default function Goals() {
               ⚠️ {erro}
             </p>
           )}
-          <button className="btn btn-primary" onClick={handleSalvar}>Salvar meta</button>
+          <button className="btn btn-primary" onClick={handleSalvar}
+            style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <CheckCircle size={16} strokeWidth={1.8} /> Salvar meta
+          </button>
         </div>
       )}
 
+      {/* Lista de metas */}
       <div className="grid-2">
         {metas.map((meta) => {
           const pct = Math.min(Math.round((meta.valorAtual / meta.valorAlvo) * 100), 100);
@@ -137,17 +165,28 @@ export default function Goals() {
             }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <span style={{ fontSize: 28, width: 48, height: 48, background: "rgba(255,255,255,0.05)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{
+                    fontSize: 28, width: 48, height: 48,
+                    background: "rgba(255,255,255,0.05)", borderRadius: 12,
+                    display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+                  }}>
                     {meta.icone}
                   </span>
                   <div>
                     <p style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)" }}>{meta.nome}</p>
-                    <p style={{ fontSize: 12, color: "var(--text-secondary)" }}>Prazo: {meta.prazo}</p>
+                    <p style={{ fontSize: 12, color: "var(--text-secondary)", display: "flex", alignItems: "center", gap: 4, marginTop: 2 }}>
+                      <Clock size={11} strokeWidth={1.8} /> Prazo: {meta.prazo}
+                    </p>
                   </div>
                 </div>
                 {concluida && (
-                  <span style={{ background: "rgba(16,185,129,0.15)", color: "#10b981", padding: "4px 12px", borderRadius: 20, fontSize: 12, fontWeight: 700, border: "1px solid rgba(16,185,129,0.25)" }}>
-                    ✅ Concluída
+                  <span style={{
+                    background: "rgba(16,185,129,0.15)", color: "#10b981",
+                    padding: "4px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700,
+                    border: "1px solid rgba(16,185,129,0.25)",
+                    display: "flex", alignItems: "center", gap: 4
+                  }}>
+                    <CheckCircle size={12} strokeWidth={1.8} /> Concluída
                   </span>
                 )}
               </div>
@@ -159,18 +198,22 @@ export default function Goals() {
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12 }}>
                 <div>
                   <p style={{ fontSize: 20, fontWeight: 800, color: "#10b981" }}>{formatarMoeda(meta.valorAtual)}</p>
-                  <p style={{ fontSize: 12, color: "var(--text-secondary)" }}>de {formatarMoeda(meta.valorAlvo)} · {pct}%</p>
+                  <p style={{ fontSize: 12, color: "var(--text-secondary)" }}>
+                    de {formatarMoeda(meta.valorAlvo)} · {pct}%
+                  </p>
                 </div>
                 <div style={{ display: "flex", gap: 8 }}>
                   {!concluida && (
                     <button className="btn btn-secondary"
+                      style={{ display: "flex", alignItems: "center", gap: 6 }}
                       onClick={() => setAportarId(aportarId === meta.id ? null : meta.id)}>
-                      + Aportar
+                      <PiggyBank size={14} strokeWidth={1.8} /> Aportar
                     </button>
                   )}
                   <button className="btn btn-danger"
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px 12px" }}
                     onClick={() => { if (window.confirm("Remover esta meta?")) removerMeta(meta.id); }}>
-                    🗑️
+                    <Trash2 size={14} strokeWidth={1.8} />
                   </button>
                 </div>
               </div>
@@ -190,10 +233,11 @@ export default function Goals() {
 
       {metas.length === 0 && !showForm && (
         <div className="card" style={{ textAlign: "center", padding: 48, color: "var(--text-secondary)" }}>
-          <p style={{ fontSize: 40 }}>🎯</p>
-          <p style={{ marginTop: 12 }}>Nenhuma meta cadastrada ainda.</p>
-          <button className="btn btn-primary" style={{ marginTop: 16 }} onClick={() => setShowForm(true)}>
-            Criar primeira meta
+          <Target size={48} strokeWidth={1.2} style={{ margin: "0 auto 12px", opacity: 0.4 }} />
+          <p>Nenhuma meta cadastrada ainda.</p>
+          <button className="btn btn-primary" style={{ marginTop: 16, display: "inline-flex", alignItems: "center", gap: 6 }}
+            onClick={() => setShowForm(true)}>
+            <Plus size={16} strokeWidth={1.8} /> Criar primeira meta
           </button>
         </div>
       )}
