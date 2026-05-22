@@ -1,10 +1,11 @@
 import { useFinance } from "../context/FinanceContext";
 import { useNavigate } from "react-router-dom";
+import { TrendingUp, TrendingDown, Wallet, ArrowRight } from "lucide-react";
 import PageWrapper from "../components/PageWrapper";
 
 const MESES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
-function BarChart({ dados, formatarMoeda }) {
+function BarChart({ dados }) {
   const maxVal = Math.max(...dados.map((d) => Math.max(d.receitas, d.despesas)), 1);
   const chartH = 100;
   const barW = 16;
@@ -25,10 +26,8 @@ function BarChart({ dados, formatarMoeda }) {
               x2={startX + dados.length * gap} y2={chartH - frac * chartH}
               stroke="rgba(255,255,255,0.06)" strokeWidth="1"
             />
-            <text
-              x={startX - 10} y={chartH - frac * chartH + 4}
-              textAnchor="end" fontSize="9" fill="var(--text-secondary)"
-            >
+            <text x={startX - 10} y={chartH - frac * chartH + 4}
+              textAnchor="end" fontSize="9" fill="var(--text-secondary)">
               {(maxVal * frac / 1000).toFixed(0)}k
             </text>
           </g>
@@ -124,7 +123,9 @@ export default function Dashboard() {
 
       <div className="grid-3">
         <div className="card" style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ fontSize: 28 }}>📈</span>
+          <div style={{ background: "rgba(16,185,129,0.12)", padding: 12, borderRadius: 12, border: "1px solid rgba(16,185,129,0.2)", flexShrink: 0 }}>
+            <TrendingUp size={22} color="#10b981" strokeWidth={1.8} />
+          </div>
           <div>
             <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>Receitas</p>
             <p style={{ fontSize: 20, fontWeight: 800, color: "#10b981" }}>
@@ -134,7 +135,9 @@ export default function Dashboard() {
         </div>
 
         <div className="card" style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ fontSize: 28 }}>📉</span>
+          <div style={{ background: "rgba(239,68,68,0.12)", padding: 12, borderRadius: 12, border: "1px solid rgba(239,68,68,0.2)", flexShrink: 0 }}>
+            <TrendingDown size={22} color="#ef4444" strokeWidth={1.8} />
+          </div>
           <div>
             <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>Despesas</p>
             <p style={{ fontSize: 20, fontWeight: 800, color: "#ef4444" }}>
@@ -144,7 +147,9 @@ export default function Dashboard() {
         </div>
 
         <div className="card" style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ fontSize: 28 }}>💰</span>
+          <div style={{ background: "rgba(59,130,246,0.12)", padding: 12, borderRadius: 12, border: "1px solid rgba(59,130,246,0.2)", flexShrink: 0 }}>
+            <Wallet size={22} color="#3b82f6" strokeWidth={1.8} />
+          </div>
           <div>
             <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>Saldo</p>
             <p style={{ fontSize: 20, fontWeight: 800, color: saldo >= 0 ? "#10b981" : "#ef4444" }}>
@@ -165,7 +170,7 @@ export default function Dashboard() {
             Últimos 4 meses
           </span>
         </div>
-        <BarChart dados={dadosMeses} formatarMoeda={formatarMoeda} />
+        <BarChart dados={dadosMeses} />
       </div>
 
       <div className="grid-2 mt-16">
@@ -205,9 +210,10 @@ export default function Dashboard() {
           <div className="card">
             <div className="flex items-center justify-between" style={{ marginBottom: 12 }}>
               <h2 style={{ fontWeight: 700, fontSize: 16 }}>Metas</h2>
-              <button className="btn btn-secondary" style={{ fontSize: 12, padding: "6px 12px" }}
+              <button className="btn btn-secondary"
+                style={{ fontSize: 12, padding: "6px 12px", display: "flex", alignItems: "center", gap: 4 }}
                 onClick={() => navigate("/goals")}>
-                Ver todas
+                Ver todas <ArrowRight size={12} strokeWidth={1.8} />
               </button>
             </div>
             {metas.slice(0, 2).map((meta) => {
