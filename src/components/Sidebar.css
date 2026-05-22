@@ -137,7 +137,7 @@ body.light .sidebar-avatar {
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
 }
 
-/* Menu inferior mobile */
+/* ===== MENU MOBILE ===== */
 .mobile-nav {
   display: none;
 }
@@ -145,32 +145,74 @@ body.light .sidebar-avatar {
 @media (max-width: 768px) {
   .mobile-nav {
     display: flex;
+    flex-direction: column;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 999;
-    background: rgba(10, 15, 30, 0.95);
+    background: rgba(10, 15, 30, 0.97);
     backdrop-filter: blur(20px);
     border-top: 1px solid rgba(16, 185, 129, 0.15);
-    padding: 8px 0 20px;
-    justify-content: space-around;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Header com saldo e ações */
+  .mobile-nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .mobile-action-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .mobile-action-btn:hover {
+    background: rgba(16, 185, 129, 0.15);
+  }
+
+  /* Links com scroll horizontal */
+  .mobile-nav-links {
+    display: flex;
+    overflow-x: auto;
+    padding: 8px 12px 10px;
+    gap: 4px;
+    scrollbar-width: none;
+  }
+
+  .mobile-nav-links::-webkit-scrollbar {
+    display: none;
   }
 
   .mobile-nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
     text-decoration: none;
     color: rgba(255,255,255,0.4);
-    padding: 6px 12px;
-    border-radius: 12px;
+    padding: 6px 10px;
+    border-radius: 10px;
     transition: all 0.15s;
-    flex: 1;
+    flex-shrink: 0;
+    min-width: 56px;
   }
 
   .mobile-nav-item.ativo {
+    background: rgba(16, 185, 129, 0.12);
     color: #10b981;
   }
 
@@ -179,5 +221,6 @@ body.light .sidebar-avatar {
   .mobile-nav-label {
     font-size: 10px;
     font-weight: 600;
+    white-space: nowrap;
   }
 }

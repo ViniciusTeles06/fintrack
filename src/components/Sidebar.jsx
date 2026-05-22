@@ -40,7 +40,7 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Sidebar desktop */}
+      {/* ===== SIDEBAR DESKTOP ===== */}
       <nav className="sidebar">
         <div className="sidebar-brand">
           <WalletIcon size={36} />
@@ -104,19 +104,53 @@ export default function Sidebar() {
         </div>
       </nav>
 
-      {/* Menu inferior mobile */}
+      {/* ===== MENU MOBILE ===== */}
       <nav className="mobile-nav">
-        {links.slice(0, 5).map((link) => (
-          <NavLink
-            key={link.to}
-            to={link.to}
-            end={link.to === "/"}
-            className={({ isActive }) => isActive ? "mobile-nav-item ativo" : "mobile-nav-item"}
-          >
-            <span className="mobile-nav-icon">{link.icon}</span>
-            <span className="mobile-nav-label">{link.label}</span>
-          </NavLink>
-        ))}
+        {/* Header mobile com saldo e ações */}
+        <div className="mobile-nav-header">
+          <div className="flex items-center gap-8">
+            <WalletIcon size={28} />
+            <div>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9" }}>FinTrack</p>
+              <p style={{
+                fontSize: 12, fontWeight: 700,
+                color: saldo >= 0 ? "#10b981" : "#ef4444"
+              }}>
+                {formatarMoeda(saldo)}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-8">
+            <button
+              onClick={toggleDarkMode}
+              className="mobile-action-btn"
+            >
+              {darkMode ? "☀️" : "🌙"}
+            </button>
+            <button
+              onClick={() => { logout(); navigate("/login"); }}
+              className="mobile-action-btn"
+            >
+              🚪
+            </button>
+          </div>
+        </div>
+
+        {/* Links com scroll horizontal */}
+        <div className="mobile-nav-links">
+          {links.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.to === "/"}
+              className={({ isActive }) => isActive ? "mobile-nav-item ativo" : "mobile-nav-item"}
+            >
+              <span className="mobile-nav-icon">{link.icon}</span>
+              <span className="mobile-nav-label">{link.label}</span>
+            </NavLink>
+          ))}
+        </div>
       </nav>
     </>
   );
