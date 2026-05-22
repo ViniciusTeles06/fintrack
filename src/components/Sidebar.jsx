@@ -1,15 +1,19 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useFinance } from "../context/FinanceContext";
+import {
+  Home, LayoutDashboard, ArrowLeftRight, PlusCircle,
+  Target, PieChart, UserCircle, Moon, Sun, LogOut, Wallet
+} from "lucide-react";
 import "./Sidebar.css";
 
 const links = [
-  { to: "/",             label: "Home",       icon: "🏠" },
-  { to: "/dashboard",    label: "Dashboard",  icon: "📊" },
-  { to: "/transactions", label: "Transações", icon: "📋" },
-  { to: "/new",          label: "Nova",       icon: "➕" },
-  { to: "/goals",        label: "Metas",      icon: "🎯" },
-  { to: "/categories",   label: "Categorias", icon: "🥧" },
-  { to: "/profile",      label: "Perfil",     icon: "👤" },
+  { to: "/",             label: "Home",       icon: Home },
+  { to: "/dashboard",    label: "Dashboard",  icon: LayoutDashboard },
+  { to: "/transactions", label: "Transações", icon: ArrowLeftRight },
+  { to: "/new",          label: "Nova",       icon: PlusCircle },
+  { to: "/goals",        label: "Metas",      icon: Target },
+  { to: "/categories",   label: "Categorias", icon: PieChart },
+  { to: "/profile",      label: "Perfil",     icon: UserCircle },
 ];
 
 export function WalletIcon({ size = 36 }) {
@@ -22,14 +26,7 @@ export function WalletIcon({ size = 36 }) {
       boxShadow: "0 0 16px rgba(16, 185, 129, 0.45)",
       flexShrink: 0,
     }}>
-      <svg width={size * 0.55} height={size * 0.55} viewBox="0 0 24 24" fill="none">
-        <rect x="2" y="7" width="20" height="13" rx="2.5"
-          fill="white" fillOpacity="0.2" stroke="white" strokeWidth="1.8"/>
-        <path d="M2 11h20" stroke="white" strokeWidth="1.8"/>
-        <circle cx="17" cy="15.5" r="1.5" fill="white"/>
-        <path d="M7 7V6a4 4 0 018 0v1"
-          stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-      </svg>
+      <Wallet size={size * 0.55} color="white" strokeWidth={1.8} />
     </div>
   );
 }
@@ -55,18 +52,21 @@ export default function Sidebar() {
         </div>
 
         <ul className="sidebar-links">
-          {links.map((link) => (
-            <li key={link.to}>
-              <NavLink
-                to={link.to}
-                end={link.to === "/"}
-                className={({ isActive }) => isActive ? "nav-link ativo" : "nav-link"}
-              >
-                <span>{link.icon}</span>
-                <span>{link.label}</span>
-              </NavLink>
-            </li>
-          ))}
+          {links.map((link) => {
+            const Icon = link.icon;
+            return (
+              <li key={link.to}>
+                <NavLink
+                  to={link.to}
+                  end={link.to === "/"}
+                  className={({ isActive }) => isActive ? "nav-link ativo" : "nav-link"}
+                >
+                  <Icon size={16} strokeWidth={1.8} />
+                  <span>{link.label}</span>
+                </NavLink>
+              </li>
+            );
+          })}
         </ul>
 
         <button
@@ -81,7 +81,7 @@ export default function Sidebar() {
           onMouseEnter={(e) => e.currentTarget.style.background = "rgba(16,185,129,0.1)"}
           onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
         >
-          <span>{darkMode ? "☀️" : "🌙"}</span>
+          {darkMode ? <Sun size={16} strokeWidth={1.8} /> : <Moon size={16} strokeWidth={1.8} />}
           <span>{darkMode ? "Modo Claro" : "Modo Escuro"}</span>
         </button>
 
@@ -92,64 +92,62 @@ export default function Sidebar() {
             onClick={() => { logout(); navigate("/login"); }}
             style={{
               marginLeft: "auto", background: "none", border: "none",
-              cursor: "pointer", fontSize: 16, opacity: 0.5,
-              transition: "opacity 0.15s"
+              cursor: "pointer", opacity: 0.5, transition: "opacity 0.15s",
+              display: "flex", alignItems: "center", color: "rgba(255,255,255,0.55)"
             }}
             onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
             onMouseLeave={(e) => e.currentTarget.style.opacity = 0.5}
             title="Sair"
           >
-            🚪
+            <LogOut size={16} strokeWidth={1.8} />
           </button>
         </div>
       </nav>
 
       {/* ===== MENU MOBILE ===== */}
       <nav className="mobile-nav">
-        {/* Header mobile com saldo e ações */}
         <div className="mobile-nav-header">
           <div className="flex items-center gap-8">
             <WalletIcon size={28} />
             <div>
               <p style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9" }}>FinTrack</p>
-              <p style={{
-                fontSize: 12, fontWeight: 700,
-                color: saldo >= 0 ? "#10b981" : "#ef4444"
-              }}>
+              <p style={{ fontSize: 12, fontWeight: 700, color: saldo >= 0 ? "#10b981" : "#ef4444" }}>
                 {formatarMoeda(saldo)}
               </p>
             </div>
           </div>
 
           <div className="flex gap-8">
-            <button
-              onClick={toggleDarkMode}
-              className="mobile-action-btn"
-            >
-              {darkMode ? "☀️" : "🌙"}
+            <button onClick={toggleDarkMode} className="mobile-action-btn">
+              {darkMode
+                ? <Sun size={16} strokeWidth={1.8} color="rgba(255,255,255,0.7)" />
+                : <Moon size={16} strokeWidth={1.8} color="rgba(255,255,255,0.7)" />
+              }
             </button>
             <button
               onClick={() => { logout(); navigate("/login"); }}
               className="mobile-action-btn"
             >
-              🚪
+              <LogOut size={16} strokeWidth={1.8} color="rgba(255,255,255,0.7)" />
             </button>
           </div>
         </div>
 
-        {/* Links com scroll horizontal */}
         <div className="mobile-nav-links">
-          {links.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              end={link.to === "/"}
-              className={({ isActive }) => isActive ? "mobile-nav-item ativo" : "mobile-nav-item"}
-            >
-              <span className="mobile-nav-icon">{link.icon}</span>
-              <span className="mobile-nav-label">{link.label}</span>
-            </NavLink>
-          ))}
+          {links.map((link) => {
+            const Icon = link.icon;
+            return (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.to === "/"}
+                className={({ isActive }) => isActive ? "mobile-nav-item ativo" : "mobile-nav-item"}
+              >
+                <Icon size={20} strokeWidth={1.8} />
+                <span className="mobile-nav-label">{link.label}</span>
+              </NavLink>
+            );
+          })}
         </div>
       </nav>
     </>
