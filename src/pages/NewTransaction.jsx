@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFinance } from "../context/FinanceContext";
+import { TrendingUp, TrendingDown, CheckCircle } from "lucide-react";
 import PageWrapper from "../components/PageWrapper";
 
 const categoriasPorTipo = {
@@ -43,10 +44,10 @@ export default function NewTransaction() {
     return (
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
         <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: 56 }}>✅</p>
-          <h2 style={{ fontSize: 24, fontWeight: 700, marginTop: 12 }}>Transação adicionada!</h2>
+          <CheckCircle size={64} color="#10b981" strokeWidth={1.5} style={{ margin: "0 auto 16px" }} />
+          <h2 style={{ fontSize: 24, fontWeight: 700 }}>Transação adicionada!</h2>
           <p style={{ color: "var(--text-secondary)", marginTop: 8 }}>Redirecionando...</p>
-          <p style={{ fontWeight: 700, color: "#10b981", marginTop: 8 }}>
+          <p style={{ fontWeight: 700, color: "#10b981", marginTop: 8, fontSize: 20 }}>
             {form.tipo === "receita" ? "+" : "-"}{formatarMoeda(parseFloat(form.valor))}
           </p>
         </div>
@@ -63,6 +64,7 @@ export default function NewTransaction() {
 
       <div className="grid-2" style={{ alignItems: "start" }}>
         <div className="card">
+          {/* Tipo */}
           <div className="flex gap-8" style={{ marginBottom: 24 }}>
             {["despesa", "receita"].map((tipo) => (
               <button
@@ -71,6 +73,7 @@ export default function NewTransaction() {
                 style={{
                   flex: 1, padding: 14, borderRadius: 12, fontSize: 15,
                   fontWeight: 700, cursor: "pointer", transition: "all 0.15s",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                   border: form.tipo === tipo
                     ? `2px solid ${tipo === "receita" ? "#10b981" : "#ef4444"}`
                     : "2px solid var(--card-border)",
@@ -82,7 +85,11 @@ export default function NewTransaction() {
                     : "var(--text-secondary)",
                 }}
               >
-                {tipo === "receita" ? "📈 Receita" : "📉 Despesa"}
+                {tipo === "receita"
+                  ? <TrendingUp size={16} strokeWidth={1.8} />
+                  : <TrendingDown size={16} strokeWidth={1.8} />
+                }
+                {tipo === "receita" ? "Receita" : "Despesa"}
               </button>
             ))}
           </div>
@@ -129,29 +136,51 @@ export default function NewTransaction() {
             )}
 
             <div className="flex gap-12">
-              <button className="btn btn-secondary w-full" onClick={() => navigate(-1)}>Cancelar</button>
-              <button className="btn btn-primary w-full" onClick={handleSubmit}>Salvar transação</button>
+              <button className="btn btn-secondary w-full" onClick={() => navigate(-1)}>
+                Cancelar
+              </button>
+              <button className="btn btn-primary w-full" onClick={handleSubmit}>
+                Salvar transação
+              </button>
             </div>
           </div>
         </div>
 
+        {/* Prévia */}
         <div className="card">
-          <h3 style={{ fontWeight: 700, marginBottom: 16, color: "var(--text-primary)" }}>Prévia</h3>
+          <h3 style={{ fontWeight: 700, marginBottom: 16, color: "var(--text-primary)" }}>
+            Prévia
+          </h3>
           <div style={{
             borderRadius: 12, padding: 20,
             background: form.tipo === "receita" ? "rgba(16,185,129,0.12)" : "rgba(239,68,68,0.1)",
             border: `1.5px solid ${form.tipo === "receita" ? "rgba(16,185,129,0.35)" : "rgba(239,68,68,0.3)"}`,
           }}>
-            <p style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, color: form.tipo === "receita" ? "#10b981" : "#ef4444" }}>
-              {form.tipo === "receita" ? "📈 Receita" : "📉 Despesa"}
-            </p>
-            <p style={{ fontSize: 16, fontWeight: 700, marginBottom: 8, color: form.descricao ? "var(--text-primary)" : "var(--text-secondary)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+              {form.tipo === "receita"
+                ? <TrendingUp size={14} color="#10b981" strokeWidth={1.8} />
+                : <TrendingDown size={14} color="#ef4444" strokeWidth={1.8} />
+              }
+              <p style={{ fontSize: 12, fontWeight: 600, color: form.tipo === "receita" ? "#10b981" : "#ef4444" }}>
+                {form.tipo === "receita" ? "Receita" : "Despesa"}
+              </p>
+            </div>
+
+            <p style={{
+              fontSize: 16, fontWeight: 700, marginBottom: 8,
+              color: form.descricao ? "var(--text-primary)" : "var(--text-secondary)"
+            }}>
               {form.descricao || "Descrição..."}
             </p>
-            <p style={{ fontSize: 28, fontWeight: 800, letterSpacing: -1, marginBottom: 12, color: form.tipo === "receita" ? "#10b981" : "#ef4444" }}>
+
+            <p style={{
+              fontSize: 28, fontWeight: 800, letterSpacing: -1, marginBottom: 12,
+              color: form.tipo === "receita" ? "#10b981" : "#ef4444",
+            }}>
               {form.tipo === "receita" ? "+" : "-"}
               {form.valor ? formatarMoeda(parseFloat(form.valor)) : "R$ 0,00"}
             </p>
+
             <div className="flex gap-12" style={{ fontSize: 12, color: "var(--text-secondary)" }}>
               <span>📁 {form.categoria}</span>
               <span>📅 {form.data}</span>
