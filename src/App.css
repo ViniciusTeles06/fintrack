@@ -287,3 +287,61 @@ body.light .form-select option {
   from { opacity: 0; transform: translateY(40px) scale(0.95); }
   to {opacity: 1; transform: translateY(0) scale(1); }
 }
+
+/* ===================== MOBILE ===================== */
+@media (max-width: 768px) {
+
+  /* Tira a margin da sidebar */
+  .main-content {
+    margin-left: 0;
+    padding: 16px;
+    padding-bottom: 90px;
+  }
+
+  /* Grids viram coluna única */
+  .grid-2, .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Títulos menores */
+  .page-title { font-size: 20px; }
+  .page-subtitle { font-size: 13px; }
+
+  /* Cards com padding menor */
+  .card { padding: 16px; }
+
+  /* Botões ocupam largura toda */
+  .btn { width: 100%; justify-content: center; }
+
+  /* Esconde a sidebar desktop */
+  .sidebar { display: none; }
+
+  /* Tabela vira cards no mobile */
+  table, thead, tbody, th, td, tr { display: block; }
+
+  thead tr { display: none; }
+
+  tbody tr {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    padding: 12px;
+  }
+
+  tbody td {
+    border: none !important;
+    padding: 4px 0 !important;
+    font-size: 13px;
+  }
+
+  tbody td:first-child {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  tbody td:last-child {
+    margin-top: 8px;
+  }
+}
