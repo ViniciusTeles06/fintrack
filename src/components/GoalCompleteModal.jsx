@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { CheckCircle, X } from "lucide-react";
 
 export default function GoalCompleteModal({ meta, onClose }) {
   useEffect(() => {
@@ -24,12 +25,22 @@ export default function GoalCompleteModal({ meta, onClose }) {
         width: "90%",
         boxShadow: "0 0 60px rgba(16,185,129,0.3)",
         animation: "slideUp 0.4s ease",
+        position: "relative",
       }}>
-        <div style={{ fontSize: 64, marginBottom: 8 }}>
-          {meta.icone}
-        </div>
+        <button onClick={onClose} style={{
+          position: "absolute", top: 16, right: 16,
+          background: "rgba(255,255,255,0.1)", border: "none",
+          borderRadius: 8, width: 32, height: 32,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          cursor: "pointer", color: "rgba(255,255,255,0.6)"
+        }}>
+          <X size={16} strokeWidth={1.8} />
+        </button>
 
-        <div style={{ fontSize: 32, marginBottom: 12 }}>🎉</div>
+        <div style={{ fontSize: 56, marginBottom: 8 }}>{meta.icone}</div>
+
+        <CheckCircle size={40} color="#10b981" strokeWidth={1.5}
+          style={{ margin: "0 auto 16px" }} />
 
         <h2 style={{
           fontSize: 22, fontWeight: 800, color: "#fff",
@@ -50,17 +61,16 @@ export default function GoalCompleteModal({ meta, onClose }) {
           background: "rgba(16,185,129,0.15)",
           border: "1px solid rgba(16,185,129,0.3)",
           borderRadius: 12, padding: "10px 20px",
-          fontSize: 20, fontWeight: 800, color: "#10b981",
+          fontSize: 16, fontWeight: 800, color: "#10b981",
           marginBottom: 20,
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 8
         }}>
-          ✅ 100% atingido
+          <CheckCircle size={18} strokeWidth={1.8} />
+          100% atingido
         </div>
 
-        <button
-          onClick={onClose}
-          className="btn btn-primary"
-          style={{ width: "100%", justifyContent: "center", padding: 12 }}
-        >
+        <button onClick={onClose} className="btn btn-primary"
+          style={{ width: "100%", justifyContent: "center", padding: 12 }}>
           Continuar
         </button>
       </div>
