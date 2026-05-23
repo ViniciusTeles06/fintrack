@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFinance } from "../context/FinanceContext";
 import { WalletIcon } from "../components/Sidebar";
+import { Mail, Lock, LogIn } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -27,7 +28,9 @@ export default function Login() {
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
             <WalletIcon size={56} />
           </div>
-          <h1 style={{ fontSize: 24, fontWeight: 800, marginTop: 8 }}>FinTrack</h1>
+          <h1 style={{ fontSize: 24, fontWeight: 800, marginTop: 8, color: "var(--text-primary)" }}>
+            FinTrack
+          </h1>
           <p style={{ color: "var(--text-secondary)", fontSize: 14, marginTop: 4 }}>
             Entre na sua conta
           </p>
@@ -36,24 +39,34 @@ export default function Login() {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div className="form-group">
             <label className="form-label">E-mail</label>
-            <input
-              className="form-input"
-              type="email"
-              placeholder="seu@email.com"
-              value={form.email}
-              onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-            />
+            <div style={{ position: "relative" }}>
+              <Mail size={14} strokeWidth={1.8} color="var(--text-secondary)"
+                style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)" }} />
+              <input
+                className="form-input"
+                type="email"
+                placeholder="seu@email.com"
+                value={form.email}
+                style={{ paddingLeft: 36 }}
+                onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
+              />
+            </div>
           </div>
 
           <div className="form-group">
             <label className="form-label">Senha</label>
-            <input
-              className="form-input"
-              type="password"
-              placeholder="••••••••"
-              value={form.senha}
-              onChange={(e) => setForm((p) => ({ ...p, senha: e.target.value }))}
-            />
+            <div style={{ position: "relative" }}>
+              <Lock size={14} strokeWidth={1.8} color="var(--text-secondary)"
+                style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)" }} />
+              <input
+                className="form-input"
+                type="password"
+                placeholder="••••••••"
+                value={form.senha}
+                style={{ paddingLeft: 36 }}
+                onChange={(e) => setForm((p) => ({ ...p, senha: e.target.value }))}
+              />
+            </div>
           </div>
 
           {erro && (
@@ -61,14 +74,16 @@ export default function Login() {
               fontSize: 13, color: "#ef4444",
               background: "rgba(239,68,68,0.1)",
               padding: "10px 14px", borderRadius: 8,
-              border: "1px solid rgba(239,68,68,0.2)"
+              border: "1px solid rgba(239,68,68,0.2)",
+              display: "flex", alignItems: "center", gap: 8
             }}>
               ⚠️ {erro}
             </p>
           )}
 
           <button className="btn btn-primary w-full" onClick={handleSubmit}
-            style={{ justifyContent: "center", padding: 14 }}>
+            style={{ justifyContent: "center", padding: 14, gap: 8 }}>
+            <LogIn size={16} strokeWidth={1.8} />
             Entrar
           </button>
 
