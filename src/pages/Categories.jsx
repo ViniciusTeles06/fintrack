@@ -1,4 +1,5 @@
 import { useFinance } from "../context/FinanceContext";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import PageWrapper from "../components/PageWrapper";
 
 const CORES = [
@@ -25,7 +26,6 @@ function PieChart({ dados, total }) {
     const x2 = cx + r * Math.cos(rad(inicio + angulo));
     const y2 = cy + r * Math.sin(rad(inicio + angulo));
     const largeArc = angulo > 180 ? 1 : 0;
-
     const path = `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`;
 
     return { ...d, path, cor: CORES[i % CORES.length] };
@@ -39,15 +39,15 @@ function PieChart({ dados, total }) {
             <title>{f.nome}: {f.pct}%</title>
           </path>
         ))}
-        {/* Círculo central */}
         <circle cx={cx} cy={cy} r={40} fill="var(--background)" />
-        <text x={cx} y={cy - 6} textAnchor="middle" fontSize="11" fill="var(--text-secondary)">Total</text>
+        <text x={cx} y={cy - 6} textAnchor="middle" fontSize="11" fill="var(--text-secondary)">
+          {dados.length}
+        </text>
         <text x={cx} y={cy + 10} textAnchor="middle" fontSize="10" fontWeight="700" fill="var(--text-primary)">
-          {dados.length} cats
+          categorias
         </text>
       </svg>
 
-      {/* Legenda */}
       <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
         {fatias.map((f, i) => (
           <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
@@ -115,10 +115,15 @@ export default function Categories() {
         {/* Despesas */}
         <div className="card">
           <div style={{ marginBottom: 20 }}>
-            <h2 style={{ fontWeight: 700, fontSize: 16, color: "var(--text-primary)" }}>
-              📉 Despesas por categoria
-            </h2>
-            <p style={{ fontSize: 13, color: "#ef4444", fontWeight: 700, marginTop: 4 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+              <div style={{ background: "rgba(239,68,68,0.12)", padding: 8, borderRadius: 8, border: "1px solid rgba(239,68,68,0.2)" }}>
+                <TrendingDown size={16} color="#ef4444" strokeWidth={1.8} />
+              </div>
+              <h2 style={{ fontWeight: 700, fontSize: 16, color: "var(--text-primary)" }}>
+                Despesas por categoria
+              </h2>
+            </div>
+            <p style={{ fontSize: 13, color: "#ef4444", fontWeight: 700, marginLeft: 40 }}>
               Total: {formatarMoeda(totalDespesas)}
             </p>
           </div>
@@ -157,10 +162,15 @@ export default function Categories() {
         {/* Receitas */}
         <div className="card">
           <div style={{ marginBottom: 20 }}>
-            <h2 style={{ fontWeight: 700, fontSize: 16, color: "var(--text-primary)" }}>
-              📈 Receitas por categoria
-            </h2>
-            <p style={{ fontSize: 13, color: "#10b981", fontWeight: 700, marginTop: 4 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+              <div style={{ background: "rgba(16,185,129,0.12)", padding: 8, borderRadius: 8, border: "1px solid rgba(16,185,129,0.2)" }}>
+                <TrendingUp size={16} color="#10b981" strokeWidth={1.8} />
+              </div>
+              <h2 style={{ fontWeight: 700, fontSize: 16, color: "var(--text-primary)" }}>
+                Receitas por categoria
+              </h2>
+            </div>
+            <p style={{ fontSize: 13, color: "#10b981", fontWeight: 700, marginLeft: 40 }}>
               Total: {formatarMoeda(totalReceitas)}
             </p>
           </div>
