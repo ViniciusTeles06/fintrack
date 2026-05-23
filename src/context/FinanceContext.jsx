@@ -2,19 +2,6 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 const FinanceContext = createContext();
 
-const transacoesIniciais = [
-  { id: 1, descricao: "Salário", valor: 5000, tipo: "receita", categoria: "Salário", data: "2025-06-01" },
-  { id: 2, descricao: "Aluguel", valor: 1200, tipo: "despesa", categoria: "Moradia", data: "2025-06-02" },
-  { id: 3, descricao: "Supermercado", valor: 450, tipo: "despesa", categoria: "Alimentação", data: "2025-06-03" },
-  { id: 4, descricao: "Freelance", valor: 800, tipo: "receita", categoria: "Renda Extra", data: "2025-06-05" },
-  { id: 5, descricao: "Conta de luz", valor: 180, tipo: "despesa", categoria: "Contas", data: "2025-06-06" },
-];
-
-const metasIniciais = [
-  { id: 1, nome: "Fundo de emergência", valorAlvo: 15000, valorAtual: 8500, prazo: "2025-12-31", icone: "🛡️" },
-  { id: 2, nome: "Viagem para Europa", valorAlvo: 10000, valorAtual: 3200, prazo: "2026-06-30", icone: "✈️" },
-];
-
 function carregarStorage(chave, valorPadrao) {
   try {
     const salvo = localStorage.getItem(chave);
@@ -26,18 +13,18 @@ function carregarStorage(chave, valorPadrao) {
 
 export function FinanceProvider({ children }) {
   const [transacoes, setTransacoes] = useState(() =>
-    carregarStorage("fintrack_transacoes", transacoesIniciais)
+    carregarStorage("fintrack_transacoes", [])
   );
 
   const [metas, setMetas] = useState(() =>
-    carregarStorage("fintrack_metas", metasIniciais)
+    carregarStorage("fintrack_metas", [])
   );
 
   const [perfil, setPerfil] = useState(() =>
     carregarStorage("fintrack_perfil", {
-      nome: "Ana Silva",
-      email: "ana.silva@email.com",
-      avatar: "AS",
+      nome: "",
+      email: "",
+      avatar: "",
     })
   );
 
@@ -75,6 +62,11 @@ export function FinanceProvider({ children }) {
     const novoUsuario = { nome, email, senha };
     setUsuarios((prev) => [...prev, novoUsuario]);
     setUsuarioLogado(true);
+
+    // Limpa os dados ao cadastrar novo usuário
+    setTransacoes([]);
+    setMetas([]);
+
     setPerfil({
       nome,
       email,
@@ -83,7 +75,12 @@ export function FinanceProvider({ children }) {
     return { sucesso: true };
   };
 
-  const logout = () => setUsuarioLogado(false);
+  const logout = () => {
+    setUsuarioLogado(false);
+    // Limpa os dados ao sair
+    setTransacoes([]);
+    setMetas([]);
+  };
 
   useEffect(() => {
     localStorage.setItem("fintrack_transacoes", JSON.stringify(transacoes));
