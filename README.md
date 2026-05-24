@@ -1,16 +1,120 @@
-# React + Vite
+# 💎 FinTrack – Gestão Financeira Pessoal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação web de controle financeiro pessoal desenvolvida com **React JS**, como projeto final da disciplina de Desenvolvimento Web – UNINASSAU.
 
-Currently, two official plugins are available:
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-latest-FF0055)
+![Lucide](https://img.shields.io/badge/Lucide_React-latest-F56565)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🚀 Deploy
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Acesse a aplicação em produção:  
+👉 **[fintrack-viniciusteles06.vercel.app](https://fintrack-viniciusteles06.vercel.app)**
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📋 Funcionalidades
+
+- 🔐 **Autenticação** — Login e cadastro de usuários com rotas protegidas
+- 🏠 **Home** — Resumo financeiro e últimas transações
+- 📊 **Dashboard** — Gráfico de barras com receitas vs despesas dos últimos 4 meses
+- 📋 **Transações** — Listagem com filtros, busca, edição e exclusão
+- ➕ **Nova Transação** — Formulário com prévia em tempo real
+- 🎯 **Metas** — Criação e acompanhamento de metas com sistema de aporte
+- 🥧 **Categorias** — Gráfico de pizza com distribuição por categoria
+- 👤 **Perfil** — Edição de dados e estatísticas do usuário
+- 🌙 **Dark/Light Mode** — Alternância de tema salva no localStorage
+- 📱 **Responsivo** — Menu inferior para mobile
+
+---
+
+## 🛠️ Tecnologias
+
+| Tecnologia | Uso |
+|---|---|
+| React 18 | Biblioteca principal |
+| React Router DOM v6 | Navegação entre as 9 páginas |
+| Framer Motion | Animações de transição entre páginas |
+| Lucide React | Ícones vetoriais profissionais |
+| Vite 5 | Bundler e servidor de desenvolvimento |
+| localStorage | Persistência de dados no navegador |
+| CSS puro | Estilização com variáveis e dark mode |
+
+---
+
+## ⚛️ Conceitos do React aplicados
+
+- ✅ **useState** — formulários, filtros, modais, dark mode
+- ✅ **useContext** — estado global de transações, metas e perfil
+- ✅ **useEffect** — sincronização com localStorage e tema
+- ✅ **props** — passagem de dados entre componentes
+- ✅ **React Router v6** — 9 páginas com NavLink ativo e rotas protegidas
+- ✅ **Componentes reutilizáveis** — Sidebar, PageWrapper, GoalCompleteModal
+
+---
+
+## 🗂️ Estrutura do projeto
+
+fintrack/
+├── index.html
+├── package.json
+├── vite.config.js
+└── src/
+├── main.jsx
+├── App.jsx
+├── App.css
+├── context/
+│   └── FinanceContext.jsx
+├── components/
+│   ├── Sidebar.jsx
+│   ├── Sidebar.css
+│   ├── PageWrapper.jsx
+│   └── GoalCompleteModal.jsx
+└── pages/
+├── Home.jsx
+├── Dashboard.jsx
+├── Transactions.jsx
+├── NewTransaction.jsx
+├── Goals.jsx
+├── Categories.jsx
+├── Profile.jsx
+├── Login.jsx
+└── Register.jsx
+
+---
+
+## ⚙️ Como instalar e executar
+
+### Pré-requisitos
+- Node.js 18 ou superior
+- npm
+
+### Passos
+
+```bash
+# Clone o repositório
+git clone https://github.com/ViniciusTeles06/fintrack.git
+
+# Entre na pasta
+cd fintrack
+
+# Instale as dependências
+npm install
+
+# Inicie o servidor de desenvolvimento
+npm run dev
+```
+
+Acesse em `http://localhost:5173`
+
+---
+
+## 📅 Informações acadêmicas
+
+- **Instituição:** UNINASSAU
+- **Disciplina:** Desenvolvimento Web com React JS
+- **Professor:** Victor Brunno
+- **Prazo de entrega:** 08 de junho de 2026
