@@ -12,7 +12,7 @@ Aplicação web de controle financeiro pessoal desenvolvida com **React JS**, co
 ## 🚀 Deploy
 
 Acesse a aplicação em produção:  
-👉 **[fintrack-viniciusteles06.vercel.app](https://fintrack-viniciusteles06.vercel.app)**
+👉 https://fintrack-nine-virid.vercel.app/
 
 ---
 
