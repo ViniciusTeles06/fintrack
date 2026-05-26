@@ -55,35 +55,33 @@ Acesse a aplicação em produção:
 - ✅ **Componentes reutilizáveis** — Sidebar, PageWrapper, GoalCompleteModal
 
 ---
-
-## 🗂️ Estrutura do projeto
-
+```bass
 fintrack/
 ├── index.html
 ├── package.json
 ├── vite.config.js
 └── src/
-├── main.jsx
-├── App.jsx
-├── App.css
-├── context/
-│   └── FinanceContext.jsx
-├── components/
-│   ├── Sidebar.jsx
-│   ├── Sidebar.css
-│   ├── PageWrapper.jsx
-│   └── GoalCompleteModal.jsx
-└── pages/
-├── Home.jsx
-├── Dashboard.jsx
-├── Transactions.jsx
-├── NewTransaction.jsx
-├── Goals.jsx
-├── Categories.jsx
-├── Profile.jsx
-├── Login.jsx
-└── Register.jsx
-
+    ├── main.jsx
+    ├── App.jsx
+    ├── App.css
+    ├── context/
+    │   └── FinanceContext.jsx
+    ├── components/
+    │   ├── Sidebar.jsx
+    │   ├── Sidebar.css
+    │   ├── PageWrapper.jsx
+    │   └── GoalCompleteModal.jsx
+    └── pages/
+        ├── Home.jsx
+        ├── Dashboard.jsx
+        ├── Transactions.jsx
+        ├── NewTransaction.jsx
+        ├── Goals.jsx
+        ├── Categories.jsx
+        ├── Profile.jsx
+        ├── Login.jsx
+        └── Register.jsx
+```
 ---
 
 ## ⚙️ Como instalar e executar
