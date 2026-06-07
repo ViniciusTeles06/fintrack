@@ -116,4 +116,4 @@ Acesse em `http://localhost:5173`
 - **Disciplina:** Desenvolvimento Web com React JS
 - **Professor:** Victor Brunno
 - **Prazo de entrega:** 08 de junho de 2026
-- **Feitor por:** Vinicius Teles
+- **Feitor por:** Vinicius Teles e Heitor Luiz
